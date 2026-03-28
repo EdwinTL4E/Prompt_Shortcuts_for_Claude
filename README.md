@@ -12,3 +12,5 @@ De commando's zijn gegroepeerd in categorieën: Uitleg, Kwaliteit, Vorm, Toepass
 De pagina heeft ook een zoekfunctie en een kopieerknop per commando, zodat je snel een shortcut kunt pakken en in je gesprek met Claude kunt plakken.
 
 Kort gezegd: het is een handige referentiekaart om sneller en gerichter met Claude te werken.
+
+Deze HTML-tool is bereikbaar via: https://edwintl4e.github.io/Prompt_Shortcuts_for_Claude/
