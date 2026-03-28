@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Shortcuts for Claude</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e11;
+    --surface: #16161b;
+    --border: #2a2a35;
+    --accent: #c8f135;
+    --accent2: #5b8fff;
+    --accent3: #ff6b6b;
+    --accent4: #ffb347;
+    --text: #e8e8f0;
+    --muted: #7a7a8c;
+    --cat1: #c8f135;
+    --cat2: #5b8fff;
+    --cat3: #ff6b6b;
+    --cat4: #ffb347;
+    --cat5: #c77dff;
+    --cat6: #00d4aa;
+    --cat7: #ff9de2;
+    --cat8: #4ecdc4;
+    --cat9: #ffd166;
+    --cat10: #a8dadc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 48px 24px 80px;
+  }
+
+  /* Header */
+  header {
+    max-width: 900px;
+    margin: 0 auto 56px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.2rem;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .logo span {
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-top: 8px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  .badge {
+    background: var(--accent);
+    color: #0e0e11;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    align-self: start;
+  }
+
+  /* Intro */
+  .intro {
+    max-width: 900px;
+    margin: 0 auto 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .intro-icon {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .intro h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .intro p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .intro p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  code.inline {
+    font-family: 'DM Mono', monospace;
+    background: rgba(200, 241, 53, 0.1);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.85em;
+  }
+
+  /* Search */
+  .search-wrap {
+    max-width: 900px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+
+  .search-wrap svg {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  #search {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 16px 13px 44px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  #search::placeholder { color: var(--muted); }
+  #search:focus { border-color: var(--accent); }
+
+  .search-count {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* No results */
+  .no-results {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 48px 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .no-results span { font-size: 2rem; display: block; margin-bottom: 12px; }
+
+  /* Copy button */
+  .cmd-row {
+    cursor: pointer;
+  }
+
+  .copy-btn {
+    margin-left: auto;
+    opacity: 0;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: opacity 0.15s, color 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    font-size: 0.7rem;
+    gap: 4px;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+
+  .cmd-row:hover .copy-btn { opacity: 1; }
+  .copy-btn:hover { color: var(--accent); background: rgba(200,241,53,0.08); }
+  .copy-btn.copied { color: var(--accent); opacity: 1; }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--accent);
+    color: #0e0e11;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 8px 18px;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  #toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Hidden rows during search */
+  .cmd-row.hidden { display: none; }
+  .cat-card.all-hidden { display: none; }
+  .grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+  }
+
+  /* Category cards */
+  .cat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .cat-header {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cat-emoji {
+    font-size: 1.3rem;
+  }
+
+  .cat-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .cat-count {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  /* Accent colors per category */
+  .cat-card:nth-child(1) .cat-title { color: var(--cat1); }
+  .cat-card:nth-child(2) .cat-title { color: var(--cat2); }
+  .cat-card:nth-child(3) .cat-title { color: var(--cat3); }
+  .cat-card:nth-child(4) .cat-title { color: var(--cat4); }
+  .cat-card:nth-child(5) .cat-title { color: var(--cat5); }
+  .cat-card:nth-child(6) .cat-title { color: var(--cat6); }
+  .cat-card:nth-child(7) .cat-title { color: var(--cat7); }
+  .cat-card:nth-child(8) .cat-title { color: var(--cat8); }
+  .cat-card:nth-child(9) .cat-title { color: var(--cat9); }
+  .cat-card:nth-child(10) .cat-title { color: var(--cat10); }
+
+  .cat-card:nth-child(1) { border-top: 2px solid var(--cat1); }
+  .cat-card:nth-child(2) { border-top: 2px solid var(--cat2); }
+  .cat-card:nth-child(3) { border-top: 2px solid var(--cat3); }
+  .cat-card:nth-child(4) { border-top: 2px solid var(--cat4); }
+  .cat-card:nth-child(5) { border-top: 2px solid var(--cat5); }
+  .cat-card:nth-child(6) { border-top: 2px solid var(--cat6); }
+  .cat-card:nth-child(7) { border-top: 2px solid var(--cat7); }
+  .cat-card:nth-child(8) { border-top: 2px solid var(--cat8); }
+  .cat-card:nth-child(9) { border-top: 2px solid var(--cat9); }
+  .cat-card:nth-child(10) { border-top: 2px solid var(--cat10); }
+
+  /* Command rows */
+  .cmd-row {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: 16px;
+    padding: 13px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    align-items: center;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  .cmd-row:last-child { border-bottom: none; }
+  .cmd-row:hover { background: rgba(255,255,255,0.03); }
+
+  .cmd-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .cat-card:nth-child(1) .cmd-tag { background: rgba(200,241,53,0.1); color: var(--cat1); }
+  .cat-card:nth-child(2) .cmd-tag { background: rgba(91,143,255,0.1); color: var(--cat2); }
+  .cat-card:nth-child(3) .cmd-tag { background: rgba(255,107,107,0.1); color: var(--cat3); }
+  .cat-card:nth-child(4) .cmd-tag { background: rgba(255,179,71,0.1); color: var(--cat4); }
+  .cat-card:nth-child(5) .cmd-tag { background: rgba(199,125,255,0.1); color: var(--cat5); }
+  .cat-card:nth-child(6) .cmd-tag { background: rgba(0,212,170,0.1); color: var(--cat6); }
+  .cat-card:nth-child(7) .cmd-tag { background: rgba(255,157,226,0.1); color: var(--cat7); }
+  .cat-card:nth-child(8) .cmd-tag { background: rgba(78,205,196,0.1); color: var(--cat8); }
+  .cat-card:nth-child(9) .cmd-tag { background: rgba(255,209,102,0.1); color: var(--cat9); }
+  .cat-card:nth-child(10) .cmd-tag { background: rgba(168,218,220,0.1); color: var(--cat10); }
+
+  .cmd-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Tips */
+  .tips {
+    max-width: 900px;
+    margin: 40px auto 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+  }
+
+  .tips h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .tip {
+    display: flex;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .tip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .tip p {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .tip p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Footer */
+  footer {
+    max-width: 900px;
+    margin: 40px auto 0;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--border);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 700px) {
+    body { padding: 28px 16px 80px; }
+
+    /* Header */
+    header { grid-template-columns: 1fr; gap: 12px; margin-bottom: 32px; padding-bottom: 24px; }
+    .logo { font-size: 2rem; }
+
+    /* Intro */
+    .intro { grid-template-columns: 1fr; gap: 10px; padding: 18px 16px; }
+    .intro-icon { font-size: 1.5rem; }
+
+    /* Search */
+    .search-wrap { margin-bottom: 24px; }
+    #search { font-size: 1rem; padding: 14px 16px 14px 44px; }
+
+    /* Grid */
+    .grid { grid-template-columns: 1fr; gap: 16px; }
+
+    /* Command rows — altijd kopieerknop zichtbaar, grotere touch targets */
+    .cmd-row {
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 14px 16px;
+      min-height: 52px;
+    }
+
+    .cmd-tag {
+      font-size: 0.82rem;
+      padding: 5px 10px;
+      grid-column: 1;
+      grid-row: 1;
+      align-self: start;
+      width: fit-content;
+    }
+
+    .cmd-desc {
+      font-size: 0.8rem;
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    /* Herorden: tag + desc links, knop rechts gecentreerd */
+    .cmd-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      align-items: center;
+    }
+
+    .copy-btn {
+      opacity: 1 !important; /* altijd zichtbaar op mobile */
+      grid-column: 2;
+      grid-row: 1 / 3;
+      align-self: center;
+      padding: 8px 10px;
+      font-size: 0.72rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--muted);
+      min-width: 60px;
+      justify-content: center;
+    }
+
+    /* Tips grid */
+    .tips { padding: 20px 16px; }
+    .tips-grid { grid-template-columns: 1fr; gap: 12px; }
+
+    /* Cat header */
+    .cat-header { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">Prompt Shortcuts for <span>Claude</span></div>
+    <div class="subtitle">Snelle commando's voor betere antwoorden</div>
+  </div>
+</header>
+
+<div class="intro">
+  <div class="intro-icon">💡</div>
+  <div>
+    <h2>Hoe werkt het?</h2>
+    <p>Typ een commando <strong>ná</strong> een antwoord van Claude om het direct te transformeren. Combineren mag ook: <code class="inline">verdiep + tabel</code> of <code class="inline">formeel + bullet</code>. Claude begrijpt de intentie en past het toe op de vorige respons. Je hoeft geen exacte spelling te gebruiken — <code class="inline">maak het korter</code> werkt net zo goed als <code class="inline">kort</code>.</p>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+  <input id="search" type="text" placeholder="Zoek een commando of beschrijving…" autocomplete="off">
+  <span class="search-count" id="search-count"></span>
+</div>
+
+<div class="no-results" id="no-results">
+  <span>🔍</span>
+  Geen commando's gevonden. Probeer een andere zoekterm.
+</div>
+
+<div class="grid">
+
+  <!-- Inhoud -->
+  <div class="cat-card">
+    <div class="cat-header">
+      <span class="cat-emoji">📋</span>
+      <span class="cat-title">Inhoud</span>
+      <span class="cat-count">6 commando's</span>
+    </div>
+    <div class="cmd-row"><span class="cmd-tag">vereenvoudig</span><span class="cmd-desc">Herschrijf in eenvoudigere taal</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">eli5</span><span class="cmd-desc">Leg uit alsof je 5 jaar oud bent</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">samenvatting</span><span class="cmd-desc">Geef de kern in 3 bullets</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">verdiep</span><span class="cmd-desc">Ga dieper in op het onderwerp</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">voorbeeld</span><span class="cmd-desc">Geef een concreet voorbeeld</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">analogie</span><span class="cmd-desc">Leg uit via een vergelijking</span><button class="copy-btn">kopieer</button></div>
+  </div>
+
+  <!-- Kwaliteit -->
+  <div class="cat-card">
+    <div class="cat-header">
+      <span class="cat-emoji">🔍</span>
+      <span class="cat-title">Kwaliteit</span>
+      <span class="cat-count">5 commando's</span>
+    </div>
+    <div class="cmd-row"><span class="cmd-tag">factcheck</span><span class="cmd-desc">Controleer feiten via web search</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">tegenargument</span><span class="cmd-desc">Geef de sterkste tegenargumenten</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">aannames</span><span class="cmd-desc">Welke aannames zitten er verborgen?</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">bronnen</span><span class="cmd-desc">Welke bronnen ondersteunen dit?</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">risico's</span><span class="cmd-desc">Wat kan er misgaan?</span><button class="copy-btn">kopieer</button></div>
+  </div>
+
+  <!-- Vorm -->
+  <div class="cat-card">
+    <div class="cat-header">
+      <span class="cat-emoji">✏️</span>
+      <span class="cat-title">Vorm</span>
+      <span class="cat-count">5 commando's</span>
+    </div>
+    <div class="cmd-row"><span class="cmd-tag">formeel</span><span class="cmd-desc">Herschrijf in formele stijl</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">bullet</span><span class="cmd-desc">Zet om naar strakke bulletpoints</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">tabel</span><span class="cmd-desc">Presenteer informatie als tabel</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">kort</span><span class="cmd-desc">Geef een kortere versie</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">uitgebreid</span><span class="cmd-desc">Geef een uitgebreidere versie</span><button class="copy-btn">kopieer</button></div>
+  </div>
+
+  <!-- Toepassing -->
+  <div class="cat-card">
+    <div class="cat-header">
+      <span class="cat-emoji">🎯</span>
+      <span class="cat-title">Toepassing</span>
+      <span class="cat-count">3 commando's</span>
+    </div>
+    <div class="cmd-row"><span class="cmd-tag">actieplan</span><span class="cmd-desc">Zet om naar concrete stappen</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">checklist</span><span class="cmd-desc">Maak er een afvinklijst van</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">toepassen op [X]</span><span class="cmd-desc">Pas toe op jouw specifieke situatie</span><button class="copy-btn">kopieer</button></div>
+  </div>
+
+  <!-- Toon -->
+  <div class="cat-card">
+    <div class="cat-header">
+      <span class="cat-emoji">💬</span>
+      <span class="cat-title">Toon</span>
+      <span class="cat-count">3 commando's</span>
+    </div>
+    <div class="cmd-row"><span class="cmd-tag">informeel</span><span class="cmd-desc">Herschrijf in casual stijl</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">overtuigend</span><span class="cmd-desc">Maak het meer overtuigend</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">neutraal</span><span class="cmd-desc">Verwijder meningen, alleen feiten</span><button class="copy-btn">kopieer</button></div>
+  </div>
+
+  <!-- Data & Analyse -->
+  <div class="cat-card">
+    <div class="cat-header">
+      <span class="cat-emoji">📊</span>
+      <span class="cat-title">Data & Analyse</span>
+      <span class="cat-count">4 commando's</span>
+    </div>
+    <div class="cmd-row"><span class="cmd-tag">kwantificeer</span><span class="cmd-desc">Voeg cijfers of schattingen toe</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">vergelijk</span><span class="cmd-desc">Zet opties naast elkaar</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">rangschik</span><span class="cmd-desc">Orden van belangrijk naar minder belangrijk</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">patroon</span><span class="cmd-desc">Welke patronen of trends zijn zichtbaar?</span><button class="copy-btn">kopieer</button></div>
+  </div>
+
+  <!-- Redeneren -->
+  <div class="cat-card">
+    <div class="cat-header">
+      <span class="cat-emoji">🧠</span>
+      <span class="cat-title">Redeneren</span>
+      <span class="cat-count">4 commando's</span>
+    </div>
+    <div class="cmd-row"><span class="cmd-tag">stap voor stap</span><span class="cmd-desc">Redeneer expliciet stap voor stap</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">pros en cons</span><span class="cmd-desc">Geef voor- en nadelen</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">beslissingsmatrix</span><span class="cmd-desc">Weeg opties af in een matrix</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">oorzaak gevolg</span><span class="cmd-desc">Analyseer wat leidt tot wat</span><button class="copy-btn">kopieer</button></div>
+  </div>
+
+  <!-- Perspectief -->
+  <div class="cat-card">
+    <div class="cat-header">
+      <span class="cat-emoji">🌍</span>
+      <span class="cat-title">Perspectief</span>
+      <span class="cat-count">4 commando's</span>
+    </div>
+    <div class="cmd-row"><span class="cmd-tag">advocaat duivel</span><span class="cmd-desc">Beredeneer het tegenovergestelde standpunt</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">expert perspectief</span><span class="cmd-desc">Bekijk vanuit een vakspecialist</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">leken perspectief</span><span class="cmd-desc">Bekijk vanuit een buitenstaander</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">historisch</span><span class="cmd-desc">Geef historische context of precedenten</span><button class="copy-btn">kopieer</button></div>
+  </div>
+
+  <!-- Iteratie -->
+  <div class="cat-card">
+    <div class="cat-header">
+      <span class="cat-emoji">🔄</span>
+      <span class="cat-title">Iteratie</span>
+      <span class="cat-count">4 commando's</span>
+    </div>
+    <div class="cmd-row"><span class="cmd-tag">anders</span><span class="cmd-desc">Geef een compleet andere aanpak</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">variatie</span><span class="cmd-desc">Geef meerdere varianten naast elkaar</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">verbeter</span><span class="cmd-desc">Maak de vorige versie beter</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">alternatief</span><span class="cmd-desc">Stel een alternatieve invalshoek voor</span><button class="copy-btn">kopieer</button></div>
+  </div>
+
+  <!-- Technisch -->
+  <div class="cat-card">
+    <div class="cat-header">
+      <span class="cat-emoji">⚙️</span>
+      <span class="cat-title">Technisch</span>
+      <span class="cat-count">4 commando's</span>
+    </div>
+    <div class="cmd-row"><span class="cmd-tag">code</span><span class="cmd-desc">Zet om naar werkende code</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">pseudocode</span><span class="cmd-desc">Beschrijf de logica in pseudocode</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">diagram</span><span class="cmd-desc">Visualiseer als diagram of schema</span><button class="copy-btn">kopieer</button></div>
+    <div class="cmd-row"><span class="cmd-tag">stappenplan</span><span class="cmd-desc">Zet om naar technische processtappen</span><button class="copy-btn">kopieer</button></div>
+  </div>
+
+</div>
+
+<div class="tips">
+  <h3>Tips & tricks</h3>
+  <div class="tips-grid">
+    <div class="tip">
+      <div class="tip-dot"></div>
+      <p><strong>Combineren</strong> — Typ meerdere commando's tegelijk: <code class="inline">verdiep + tabel</code></p>
+    </div>
+    <div class="tip">
+      <div class="tip-dot"></div>
+      <p><strong>Vrije vorm</strong> — <code class="inline">maak het korter</code> werkt net zo goed als <code class="inline">kort</code></p>
+    </div>
+    <div class="tip">
+      <div class="tip-dot"></div>
+      <p><strong>Context meegeven</strong> — <code class="inline">toepassen op mijn startup</code> of <code class="inline">formeel voor een rapport</code></p>
+    </div>
+    <div class="tip">
+      <div class="tip-dot"></div>
+      <p><strong>Stapelen</strong> — Gebruik commando's meerdere keren achter elkaar om te verfijnen</p>
+    </div>
+  </div>
+</div>
+
+<footer>v1.0 · maart 2026 · TL4E</footer>
+
+<div id="toast">✓ Gekopieerd!</div>
+
+<script>
+  // Copy on click
+  document.querySelectorAll('.cmd-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const tag = row.querySelector('.cmd-tag').textContent.trim();
+      navigator.clipboard.writeText(tag).then(() => {
+        const btn = row.querySelector('.copy-btn');
+        btn.textContent = '✓ klaar';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'kopieer'; btn.classList.remove('copied'); }, 1500);
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 1800);
+      });
+    });
+  });
+
+  // Search / filter
+  const searchEl = document.getElementById('search');
+  const countEl = document.getElementById('search-count');
+  const noResults = document.getElementById('no-results');
+  const total = document.querySelectorAll('.cmd-row').length;
+
+  searchEl.addEventListener('input', () => {
+    const q = searchEl.value.toLowerCase().trim();
+    let visible = 0;
+
+    document.querySelectorAll('.cat-card').forEach(card => {
+      let cardVisible = 0;
+      card.querySelectorAll('.cmd-row').forEach(row => {
+        const tag = row.querySelector('.cmd-tag').textContent.toLowerCase();
+        const desc = row.querySelector('.cmd-desc').textContent.toLowerCase();
+        const match = !q || tag.includes(q) || desc.includes(q);
+        row.classList.toggle('hidden', !match);
+        if (match) { cardVisible++; visible++; }
+      });
+      card.classList.toggle('all-hidden', cardVisible === 0);
+    });
+
+    countEl.textContent = q ? `${visible} van ${total}` : '';
+    noResults.style.display = (q && visible === 0) ? 'block' : 'none';
+  });
+</script>
+
+</body>
+</html>
