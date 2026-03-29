@@ -242,6 +242,7 @@
 
   /* Hidden rows during search */
   .cmd-row.hidden { display: none; }
+  .eigen-row.hidden { display: none; }
   .cat-card.all-hidden { display: none; }
   .grid {
     max-width: 900px;
@@ -407,6 +408,219 @@
     font-weight: 500;
   }
 
+  /* Eigen Prompts */
+  .eigen-prompts {
+    max-width: 900px;
+    margin: 40px auto 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .eigen-header {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eigen-header-emoji { font-size: 1.3rem; }
+
+  .eigen-header-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent2);
+  }
+
+  .eigen-count {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .eigen-list { min-height: 0; }
+
+  .eigen-row {
+    display: grid;
+    grid-template-columns: 160px 1fr auto auto;
+    gap: 16px;
+    padding: 13px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    align-items: center;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  .eigen-row:last-child { border-bottom: none; }
+  .eigen-row:hover { background: rgba(255,255,255,0.03); }
+
+  .eigen-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+    background: rgba(91,143,255,0.1);
+    color: var(--accent2);
+  }
+
+  .eigen-preview {
+    font-size: 0.83rem;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .eigen-copy-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s, background 0.15s;
+  }
+
+  .eigen-row:hover .eigen-copy-btn { opacity: 1; }
+  .eigen-copy-btn:hover { color: var(--accent2); background: rgba(91,143,255,0.08); }
+  .eigen-copy-btn.copied { color: var(--accent); opacity: 1; }
+
+  .eigen-del-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s;
+    line-height: 1;
+  }
+
+  .eigen-row:hover .eigen-del-btn { opacity: 1; }
+  .eigen-del-btn:hover { color: var(--accent3); }
+
+  .eigen-empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.83rem;
+    font-style: italic;
+  }
+
+  /* Add form */
+  .eigen-add-form {
+    border-top: 1px solid var(--border);
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 160px 1fr auto;
+    gap: 12px;
+    align-items: start;
+    background: rgba(91,143,255,0.03);
+  }
+
+  .eigen-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 9px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .eigen-input::placeholder { color: var(--muted); }
+  .eigen-input:focus { border-color: var(--accent2); }
+
+  .eigen-textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 9px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.83rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    resize: vertical;
+    min-height: 70px;
+    line-height: 1.5;
+  }
+
+  .eigen-textarea::placeholder { color: var(--muted); }
+  .eigen-textarea:focus { border-color: var(--accent2); }
+
+  .eigen-save-btn {
+    background: var(--accent2);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 9px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+    align-self: end;
+  }
+
+  .eigen-save-btn:hover { opacity: 0.85; }
+  .eigen-save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  @media (max-width: 700px) {
+    .eigen-row {
+      grid-template-columns: 1fr auto auto;
+      grid-template-rows: auto auto;
+      padding: 14px 16px;
+      gap: 8px;
+    }
+    .eigen-tag {
+      grid-column: 1; grid-row: 1;
+      max-width: 100%;
+    }
+    .eigen-preview {
+      grid-column: 1; grid-row: 2;
+      font-size: 0.78rem;
+    }
+    .eigen-copy-btn, .eigen-del-btn {
+      opacity: 1;
+      grid-row: 1 / 3;
+      align-self: center;
+    }
+    .eigen-add-form {
+      grid-template-columns: 1fr;
+      padding: 16px;
+    }
+    .eigen-save-btn { width: 100%; }
+  }
+
   /* Footer */
   footer {
     max-width: 900px;
@@ -504,7 +718,7 @@
   <div class="intro-icon">💡</div>
   <div>
     <h2>Hoe werkt het?</h2>
-    <p>Typ een commando <strong>ná</strong> een antwoord van Claude om het direct te transformeren. Combineren mag ook: <code class="inline">verdiep + tabel</code> of <code class="inline">formeel + bullet</code>. Claude begrijpt de intentie en past het toe op de vorige respons. Je hoeft geen exacte spelling te gebruiken — <code class="inline">maak het korter</code> werkt net zo goed als <code class="inline">kort</code>.</p>
+    <p>Klik op een commando om het te kopiëren en plak het daarna in Claude <strong>ná</strong> een antwoord om het direct te transformeren. Combineren mag ook: <code class="inline">verdiep + tabel</code> of <code class="inline">formeel + bullet</code>. Claude begrijpt de intentie en past het toe op de vorige respons. Je hoeft geen exacte spelling te gebruiken — <code class="inline">maak het korter</code> werkt net zo goed als <code class="inline">kort</code>.</p>
   </div>
 </div>
 
@@ -655,6 +869,22 @@
 
 </div>
 
+<div class="eigen-prompts" id="eigen-prompts-block">
+  <div class="eigen-header">
+    <span class="eigen-header-emoji">⭐</span>
+    <span class="eigen-header-title">Eigen prompts</span>
+    <span class="eigen-count" id="eigen-count">0 opgeslagen</span>
+  </div>
+  <div class="eigen-list" id="eigen-list">
+    <div class="eigen-empty" id="eigen-empty">Nog geen eigen prompts — voeg er hieronder een toe.</div>
+  </div>
+  <div class="eigen-add-form">
+    <input class="eigen-input" id="eigen-label" type="text" placeholder="Label (bijv. AVG-check)" maxlength="40" autocomplete="off">
+    <textarea class="eigen-textarea" id="eigen-text" placeholder="Jouw prompttekst…" maxlength="2000"></textarea>
+    <button class="eigen-save-btn" id="eigen-save-btn">Opslaan</button>
+  </div>
+</div>
+
 <div class="tips">
   <h3>Tips & tricks</h3>
   <div class="tips-grid">
@@ -698,7 +928,111 @@
     });
   });
 
-  // Search / filter
+  // ── Eigen Prompts ──────────────────────────────────────
+  const STORAGE_KEY = 'prompt_shortcuts_eigen';
+
+  function loadEigen() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function saveEigen(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+
+  function renderEigen() {
+    const list = loadEigen();
+    const container = document.getElementById('eigen-list');
+    const empty = document.getElementById('eigen-empty');
+    const countEl = document.getElementById('eigen-count');
+
+    // Remove existing rows (keep empty msg node)
+    container.querySelectorAll('.eigen-row').forEach(r => r.remove());
+
+    countEl.textContent = list.length === 1 ? '1 opgeslagen' : `${list.length} opgeslagen`;
+
+    if (list.length === 0) {
+      empty.style.display = '';
+      return;
+    }
+    empty.style.display = 'none';
+
+    list.forEach((item, idx) => {
+      const row = document.createElement('div');
+      row.className = 'eigen-row';
+      row.innerHTML = `
+        <span class="eigen-tag" title="${escHtml(item.label)}">${escHtml(item.label)}</span>
+        <span class="eigen-preview" title="${escHtml(item.text)}">${escHtml(item.text)}</span>
+        <button class="eigen-copy-btn" data-idx="${idx}">kopieer</button>
+        <button class="eigen-del-btn" data-idx="${idx}" title="Verwijder">✕</button>
+      `;
+
+      // Copy full prompt text on row click (except buttons)
+      row.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        copyEigen(idx, row.querySelector('.eigen-copy-btn'));
+      });
+
+      row.querySelector('.eigen-copy-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        copyEigen(idx, e.currentTarget);
+      });
+
+      row.querySelector('.eigen-del-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!confirm(`"${item.label}" verwijderen?`)) return;
+        const updated = loadEigen();
+        updated.splice(idx, 1);
+        saveEigen(updated);
+        renderEigen();
+      });
+
+      container.appendChild(row);
+    });
+  }
+
+  function copyEigen(idx, btn) {
+    const list = loadEigen();
+    if (!list[idx]) return;
+    navigator.clipboard.writeText(list[idx].text).then(() => {
+      btn.textContent = '✓ klaar';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'kopieer'; btn.classList.remove('copied'); }, 1500);
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1800);
+    });
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // Save button
+  document.getElementById('eigen-save-btn').addEventListener('click', () => {
+    const label = document.getElementById('eigen-label').value.trim();
+    const text  = document.getElementById('eigen-text').value.trim();
+    if (!label || !text) return;
+    const list = loadEigen();
+    list.push({ label, text });
+    saveEigen(list);
+    document.getElementById('eigen-label').value = '';
+    document.getElementById('eigen-text').value = '';
+    renderEigen();
+  });
+
+  // Enable save on Enter in label field (Tab to textarea instead if text empty)
+  document.getElementById('eigen-label').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('eigen-text').focus();
+    }
+  });
+
+  // Initial render
+  renderEigen();
+
+  // ── Search / filter ──────────────────────────────────────
   const searchEl = document.getElementById('search');
   const countEl = document.getElementById('search-count');
   const noResults = document.getElementById('no-results');
@@ -708,6 +1042,7 @@
     const q = searchEl.value.toLowerCase().trim();
     let visible = 0;
 
+    // Vaste commando's
     document.querySelectorAll('.cat-card').forEach(card => {
       let cardVisible = 0;
       card.querySelectorAll('.cmd-row').forEach(row => {
@@ -720,7 +1055,24 @@
       card.classList.toggle('all-hidden', cardVisible === 0);
     });
 
-    countEl.textContent = q ? `${visible} van ${total}` : '';
+    // Eigen prompts
+    let eigenVisible = 0;
+    document.querySelectorAll('.eigen-row').forEach(row => {
+      const label = row.querySelector('.eigen-tag').textContent.toLowerCase();
+      const preview = row.querySelector('.eigen-preview').textContent.toLowerCase();
+      const match = !q || label.includes(q) || preview.includes(q);
+      row.classList.toggle('hidden', !match);
+      if (match) { eigenVisible++; visible++; }
+    });
+    const eigenBlock = document.getElementById('eigen-prompts-block');
+    // Verberg het hele eigen-prompts blok alleen als er gezocht wordt én er geen treffer is
+    if (q && eigenVisible === 0 && document.querySelectorAll('.eigen-row').length > 0) {
+      eigenBlock.style.display = 'none';
+    } else {
+      eigenBlock.style.display = '';
+    }
+
+    countEl.textContent = q ? `${visible} van ${total + document.querySelectorAll('.eigen-row').length}` : '';
     noResults.style.display = (q && visible === 0) ? 'block' : 'none';
   });
 </script>
